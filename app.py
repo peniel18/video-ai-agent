@@ -15,3 +15,14 @@ load_dotenv()
 GOOGLE_API_KEY = os.getenv("GOOGLE_AI_API")
 if GOOGLE_API_KEY: 
     genai.configure(api_key=GOOGLE_API_KEY)
+
+
+
+st.set_page_config(
+    page_title="MultiModel AI Agent", 
+    page_icon="", 
+    layout="wide"
+)
+
+
+st.title("PhiData Multimodal Video AI agent")
