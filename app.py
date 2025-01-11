@@ -25,4 +25,19 @@ st.set_page_config(
 )
 
 
-st.title("PhiData Multimodal Video AI agent")
+st.title("PhiData Multimodal Video AI Agent")
+st.header("Powered by Gemini")
+
+
+@st.cache_resource
+def initialize_agent():
+    return Agent(
+        name="Video AI Summarizer", 
+        model=Gemini(id="gemini-2.0-flash-exp"),
+        tools=[DuckDuckGo()], 
+        markdown=True
+    )
+
+# get agent 
+multimodel_agent = initialize_agent()
+
