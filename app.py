@@ -39,5 +39,12 @@ def initialize_agent():
     )
 
 # get agent 
-multimodel_agent = initialize_agent()
+video_agent = initialize_agent()
 
+# get video file via st file upload 
+video_file = st.file_uploader(
+    "Upload a video file", type=["mp4", "mov", "avi"], help="Upload a video file for AI analysis"
+)
+
+if video_file: 
+    pass 
