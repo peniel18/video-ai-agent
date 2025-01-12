@@ -68,7 +68,7 @@ if video_file:
                 with st.spinner("Processing video and gathering insights"): 
                     # upload to google gen ai 
                     video = upload_file(video_path)
-                    while video.state.name = "PROCESSING":
+                    while video.state.name == "PROCESSING":
                         time.sleep(1)
                         video = get_file(video.name)
 
