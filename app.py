@@ -47,4 +47,66 @@ video_file = st.file_uploader(
 )
 
 if video_file: 
-    pass 
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
+        temp_video.write(video_file.read())
+        video_path = temp_video.name 
+
+
+    st.video(video_path, format="video/mp4", start_time=0)
+
+    user_query = st.text_area(
+        "What Insights are you seeking from  the video", 
+        placeholder="Ask Anything about the video content. The AI Agent will analyze the content for you", 
+        help="Provide specific questions or insights you want from the video."
+    )
+
+    if st.button("🔍 Analyze Video", key="analyze_video_button"):
+        if not user_query: 
+            st.warning("Please enter a question or insight to analyze the video")
+        else: 
+            try: 
+                with st.spinner("Processing video and gathering insights"): 
+                    # upload to google gen ai 
+                    video = upload_file(video_path)
+                    while video.state.name = "PROCESSING":
+                        time.sleep(1)
+                        video = get_file(video.name)
+
+                    
+                     # Prompt generation for analysis
+                    analysis_prompt = (
+                        f"""
+                        Analyze the uploaded video for content and context.
+                        Respond to the following query using video insights and supplementary web research:
+                        {user_query}
+
+                        Provide a detailed, user-friendly, and actionable response.
+                        """
+                    )
+
+                    response = video_agent.run(analysis_prompt, videos=[video])
+                
+                st.subheader("Anaylsis Results")
+                st.markdown(response.content)
+
+
+            except Exception as e: 
+                st.error(f"An error occurred during analysis: {e}")
+
+            finally: 
+                Path(video_path).unlink(missing_ok=True)
+
+else: 
+    st.info("Upload a video file to begin analysis.")
+
+# Customize text area height
+st.markdown(
+    """
+    <style>
+    .stTextArea textarea {
+        height: 100px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
